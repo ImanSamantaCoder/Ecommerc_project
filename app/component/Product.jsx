@@ -6,7 +6,7 @@ import { useProductContext } from "../context/ProductContext";
 import { ToastContainer, toast,Bounce } from 'react-toastify';
 
 const Product = ({ items }) => {
-  const {addToCart} = useProductContext();
+  const {addToCart,getCartItems} = useProductContext();
   return (
     <>
     <ToastContainer
@@ -35,7 +35,7 @@ transition={Bounce}
                   className="card bg-dark text-light"
                   style={{ width: "18rem" }}
                 >
-                  <Link href="/">
+                  <Link href={`/${product._id}`}>
                     <div className="d-flex justify-content-center align-items-center p-5">
                       <img src={product.imagesrc} alt="img" className="card-img-top" style={{width:"200px",borderRadius:"10px",border:"1px solid yellow"}}/>
                     </div>
@@ -49,7 +49,7 @@ transition={Bounce}
                       {product.price}₹
 
                     </button>
-                    <button onClick={()=>addToCart(product.title,product.imagesrc,product.price,toast)} className="btn btn-warning">
+                    <button onClick={()=>{addToCart(product.title,product.imagesrc,product.price,toast), getCartItems()}} className="btn btn-warning">
                       Add to cart
                     </button>
                   </div>

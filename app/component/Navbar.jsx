@@ -5,7 +5,7 @@ import { FaSearch } from "react-icons/fa";
 import { FaShoppingCart } from "react-icons/fa";
 import { useProductContext } from "../context/ProductContext";
 const Navbar = () => {
-  const { products, data, setData } = useProductContext();
+  const { products, data, setData,cart } = useProductContext();
   const filterByCategory = (category) => {
     setData(products.filter((p) => p.category == category));
   };
@@ -38,9 +38,9 @@ const Navbar = () => {
             <Link href="/cart" className="ms-2 btn-outline-warning">
               <button className="btn btn-danger">
                 <FaShoppingCart className="fs-blue text-light" />
-                <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-                  5
-                </span>
+                
+                  {cart.length >0 && <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"> {cart.length}</span>}
+               
               </button>
             </Link>
           </div>

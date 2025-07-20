@@ -8,6 +8,7 @@ const API_BASE_URL = "http://localhost:3000/api";
 export const ProductProvider = ({ children }) => {
   const [products, setProducts] = useState([]);
   const [data, setData] = useState([]);
+  const [cart,setCart] = useState([]);
   const fetchAllProducts = async () => {
     const api = await axios.get(`${API_BASE_URL}/products`);
     setProducts(api.data.product);
@@ -15,9 +16,7 @@ export const ProductProvider = ({ children }) => {
     console.log("fetched all products = ", products);
   };
 
-  useEffect(() => {
-    fetchAllProducts();
-  }, []);
+  
   const addToCart = async (title, imagesrc, price, toast) => {
     const api = await axios.post(`${API_BASE_URL}/cart`, {
       title,
@@ -30,8 +29,17 @@ export const ProductProvider = ({ children }) => {
     }
     console.log("product added to cart:",api.data)
   };
+  const getCartItems = async ()=>{
+    const api = await axios.get(`${API_BASE_URL}/cart`);
+    console.log("cart items",api.data.cartItems);
+    setCart(api.data.cartItems);
+  }
+  useEffect(() => {
+    getCartItems();
+    fetchAllProducts();
+  }, []);
   return (
-    <ProductContext.Provider value={{ products, data, setData,addToCart }}>
+    <ProductContext.Provider value={{ products, data, setData,addToCart,getCartItems,cart }}>
       {children}
       {console.log(products)}
       {console.log("my data:", data)}
