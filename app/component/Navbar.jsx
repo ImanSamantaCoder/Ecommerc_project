@@ -1,9 +1,10 @@
 "use client";
-import React from "react";
+import React,{useState} from "react";
 import Link from "next/link";
 import { FaSearch } from "react-icons/fa";
 import { FaShoppingCart } from "react-icons/fa";
 import { useProductContext } from "../context/ProductContext";
+import { usePathname,useRouter } from "next/navigation";
 const Navbar = () => {
   const { products, data, setData,cart } = useProductContext();
   const filterByCategory = (category) => {
@@ -12,6 +13,14 @@ const Navbar = () => {
   const filterByPrice = (price) => {
     setData(products.filter((p) => (p.price <= price)));
   };
+  const pathname = usePathname();
+  const router = useRouter();
+  const [searchTerm,setSearchTerm] = useState("")
+  const handleSubmit = (e)=>{
+     e.preventDefault();
+     router.push(`/search/${searchTerm}`)
+     setSearchTerm("")
+  }
   return (
     <>
       <nav
@@ -22,10 +31,12 @@ const Navbar = () => {
           <Link href="/" className="navbar-brand fw-bold text-light">
             Iman's Ecommerce
           </Link>
-          <form className="d-flex flex-grow-1 mx-4" role="search">
+          <form onSubmit={handleSubmit} className="d-flex flex-grow-1 mx-4" role="search">
             <div className="input-group">
               <input
                 type="text"
+                value={searchTerm}
+                onChange={(e)=>{setSearchTerm(e.target.value)}}
                 className="form-control me-2"
                 placeholder="Search products..."
               />
@@ -46,7 +57,7 @@ const Navbar = () => {
           </div>
         </div>
       </nav>
-      <div className="container">
+      {pathname == "/" &&  <div className="container">
         <div className="bg-dark text-light my-3">
           <div className="container p-3 rounded">
             <div className="row">
@@ -68,7 +79,8 @@ const Navbar = () => {
             </div>
           </div>
         </div>
-      </div>
+      </div>}
+     
     </>
   );
 };

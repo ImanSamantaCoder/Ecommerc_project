@@ -34,12 +34,16 @@ export const ProductProvider = ({ children }) => {
     console.log("cart items",api.data.cartItems);
     setCart(api.data.cartItems);
   }
+  const clearCart =async ()=>{
+     const api = axios.delete(`${API_BASE_URL}/cart`);
+     getCartItems();
+  }
   useEffect(() => {
     getCartItems();
     fetchAllProducts();
   }, []);
   return (
-    <ProductContext.Provider value={{ products, data, setData,addToCart,getCartItems,cart }}>
+    <ProductContext.Provider value={{ products, data, setData,addToCart,getCartItems,cart,clearCart }}>
       {children}
       {console.log(products)}
       {console.log("my data:", data)}
